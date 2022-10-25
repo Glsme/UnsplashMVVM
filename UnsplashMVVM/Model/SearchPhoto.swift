@@ -8,6 +8,7 @@
 import Foundation
 
 struct SearchPhoto: Codable, Hashable {
+     
     let total, totalPages: Int
     let results: [SearchResult]
     
