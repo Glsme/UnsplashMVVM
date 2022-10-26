@@ -8,6 +8,8 @@
 import Foundation
 import Alamofire
 
+
+
 class APIService {
     static func searchPhoto(query: String, completion: @escaping (SearchPhoto?, Int?, Error?) -> Void) {
         let url = "\(APIKey.searchURL)\(query)"

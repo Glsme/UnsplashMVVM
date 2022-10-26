@@ -40,7 +40,7 @@ class ImageListViewController: UIViewController {
                 var snapshot = NSDiffableDataSourceSnapshot<Int, SearchResult>()
                 snapshot.appendSections([0])
                 snapshot.appendItems(photo.results)
-                vc.dataSource.apply(snapshot)
+                vc.dataSource.apply(snapshot, animatingDifferences: false)
             }
             .disposed(by: disposeBag)
     }
@@ -53,7 +53,9 @@ extension ImageListViewController: UISearchBarDelegate {
 }
 
 extension ImageListViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath)
+    }
 }
 
 extension ImageListViewController {

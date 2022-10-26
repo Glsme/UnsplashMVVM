@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 
 class ImageListViewModel {
-    var photoList = PublishSubject<SearchPhoto>()
+    var photoList = BehaviorSubject<SearchPhoto>(value: SearchPhoto(total: 0, totalPages: 0, results: []))
     
     func requestSearchPhoto(query: String) {
         print(#function)

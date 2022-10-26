@@ -77,8 +77,7 @@
 		85E5E885290809E500FF5DA4 /* UnsplashMVVM */ = {
 			isa = PBXGroup;
 			children = (
-				85E5E8A829081BB800FF5DA4 /* Model */,
-				85E5E8A529081B0300FF5DA4 /* Utility */,
+				85E5E8A529081B0300FF5DA4 /* Network */,
 				85E5E8A229081AA500FF5DA4 /* APIKey */,
 				85E5E89A29080BBF00FF5DA4 /* ImageList */,
 				85E5E886290809E500FF5DA4 /* AppDelegate.swift */,
@@ -124,12 +123,13 @@
 			path = APIKey;
 			sourceTree = "<group>";
 		};
-		85E5E8A529081B0300FF5DA4 /* Utility */ = {
+		85E5E8A529081B0300FF5DA4 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				85E5E8A829081BB800FF5DA4 /* Model */,
 				85E5E8A629081B2500FF5DA4 /* APIService.swift */,
 			);
-			path = Utility;
+			path = Network;
 			sourceTree = "<group>";
 		};
 		85E5E8A829081BB800FF5DA4 /* Model */ = {
