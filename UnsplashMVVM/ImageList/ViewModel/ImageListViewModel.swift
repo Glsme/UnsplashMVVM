@@ -9,11 +9,13 @@ import Foundation
 import RxSwift
 
 class ImageListViewModel {
+    
+    let photoList = BehaviorSubject(value: SearchPhoto(total: 0, totalPages: 0, results: []))
 
     func requestPhoto(query: String) {
-        UnsplashAPIManager.shared.requsetUnsplashPhto(query: query) { value, error in
+        UnsplashAPIManager.shared.requsetUnsplashPhto(query: query) { [weak self] value, error in
             guard let value = value else { return }
-            print(value)
+            self?.photoList.onNext(value)
         }
     }
 }

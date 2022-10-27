@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct SearchPhoto: Codable {
+struct SearchPhoto: Codable, Hashable {
     let total, totalPages: Int
-    let results: [Result]
+    let results: [PhotoResults]
 
     enum CodingKeys: String, CodingKey {
         case total
@@ -19,7 +19,7 @@ struct SearchPhoto: Codable {
 }
 
 // MARK: - Result
-struct Result: Codable {
+struct PhotoResults: Codable, Hashable {
     let id: String
     let urls: Urls
     let likes: Int
@@ -31,7 +31,7 @@ struct Result: Codable {
 }
 
 // MARK: - Urls
-struct Urls: Codable {
+struct Urls: Codable, Hashable {
     let raw, full, regular, small: String
     let thumb, smallS3: String
 

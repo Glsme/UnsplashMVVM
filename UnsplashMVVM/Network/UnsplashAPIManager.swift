@@ -14,7 +14,7 @@ class UnsplashAPIManager {
     private init() { }
     
     func requsetUnsplashPhto(query: String, completionHandler: @escaping (SearchPhoto?, Error?) -> Void) {
-        let url = APIKey.searchURL + "apple"
+        let url = APIKey.searchURL + query
         let header: HTTPHeaders = ["Authorization": APIKey.authorization]
         
         AF.request(url, method: .get, headers: header).responseDecodable(of: SearchPhoto.self) { responce in
@@ -25,3 +25,7 @@ class UnsplashAPIManager {
         }
     }
 }
+
+// urlrequestconvertible
+// escaping closure -> Result Type
+

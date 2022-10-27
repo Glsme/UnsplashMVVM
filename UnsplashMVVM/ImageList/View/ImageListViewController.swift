@@ -7,13 +7,17 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
 class ImageListViewController: UIViewController {
     
     @IBOutlet weak var ImageSearchbar: UISearchBar!
     @IBOutlet weak var imageCollectionView: UICollectionView!
     
     let viewModel = ImageListViewModel()
-    private var dataSource: UICollectionViewDiffableDataSource<Int, String>!
+    let disposeBag = DisposeBag()
+    
+    private var dataSource: UICollectionViewDiffableDataSource<Int, PhotoResults>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +26,19 @@ class ImageListViewController: UIViewController {
         configureDataSource()
         
         viewModel.requestPhoto(query: "apple")
+        bindData()
+    }
+    
+    func bindData() {
+        viewModel.photoList
+            .withUnretained(self)
+            .bind { (vc, value) in
+                var snapshot = NSDiffableDataSourceSnapshot<Int, PhotoResults>()
+                snapshot.appendSections([0])
+                snapshot.appendItems(value.results)
+                vc.dataSource.apply(snapshot)
+            }
+            .disposed(by: disposeBag)
     }
 }
 
@@ -33,9 +50,9 @@ extension ImageListViewController {
     }
     
     private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, String> { cell, indexPath, itemIdentifier in
+        let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, PhotoResults> { cell, indexPath, itemIdentifier in
             var content = UIListContentConfiguration.valueCell()
-            content.text = itemIdentifier
+            content.text = "\(itemIdentifier.likes)"
             cell.contentConfiguration = content
         }
         
@@ -43,10 +60,5 @@ extension ImageListViewController {
             let cell = collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
             return cell
         })
-        
-        var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
-        snapshot.appendSections([0])
-        snapshot.appendItems("어우 개배불러".map { String($0) })
-        dataSource.apply(snapshot)
     }
 }
