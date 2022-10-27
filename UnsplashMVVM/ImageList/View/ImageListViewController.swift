@@ -36,7 +36,7 @@ class ImageListViewController: UIViewController {
                 var snapshot = NSDiffableDataSourceSnapshot<Int, PhotoResults>()
                 snapshot.appendSections([0])
                 snapshot.appendItems(value.results)
-                vc.dataSource.apply(snapshot)
+                vc.dataSource.apply(snapshot, animatingDifferences: false)
             }
             .disposed(by: disposeBag)
     }
@@ -53,6 +53,17 @@ extension ImageListViewController {
         let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, PhotoResults> { cell, indexPath, itemIdentifier in
             var content = UIListContentConfiguration.valueCell()
             content.text = "\(itemIdentifier.likes)"
+            
+            DispatchQueue.global().async {
+                let url = URL(string: itemIdentifier.urls.thumb)!
+                let data = try? Data(contentsOf: url)
+                
+                DispatchQueue.main.async {
+                    content.image = UIImage(data: data!)
+                    cell.contentConfiguration = content
+                }
+            }
+            
             cell.contentConfiguration = content
         }
         
