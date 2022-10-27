@@ -23,9 +23,6 @@
                                     <constraint firstAttribute="height" constant="44" id="tDa-Qh-Skz"/>
                                 </constraints>
                                 <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="7b0-oM-Yh7"/>
-                                </connections>
                             </searchBar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="rJf-fn-FmT">
                                 <rect key="frame" x="0.0" y="103" width="393" height="715"/>
@@ -61,8 +58,8 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="imageCollectionView" destination="rJf-fn-FmT" id="UIo-4u-kQv"/>
-                        <outlet property="searchbar" destination="JbM-c8-vIU" id="0WX-oV-9AY"/>
+                        <outlet property="ImageSearchbar" destination="JbM-c8-vIU" id="o3g-Jt-7qe"/>
+                        <outlet property="imageCollectionView" destination="rJf-fn-FmT" id="nIe-il-bX7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
