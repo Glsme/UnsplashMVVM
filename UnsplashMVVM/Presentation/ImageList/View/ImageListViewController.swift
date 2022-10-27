@@ -28,6 +28,7 @@ class ImageListViewController: UIViewController {
     }
     
     func configureUI() {
+        imageCollectionView.delegate = self
         imageCollectionView.collectionViewLayout = createLayout()
         imageSearchbar.delegate = self
     }
@@ -49,6 +50,12 @@ extension ImageListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text else { return }
         viewModel.requestPhoto(query: text)
+    }
+}
+
+extension ImageListViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath)
     }
 }
 
