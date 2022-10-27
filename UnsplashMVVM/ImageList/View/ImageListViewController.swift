@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 class ImageListViewController: UIViewController {
     
-    @IBOutlet weak var ImageSearchbar: UISearchBar!
+    @IBOutlet weak var imageSearchbar: UISearchBar!
     @IBOutlet weak var imageCollectionView: UICollectionView!
     
     let viewModel = ImageListViewModel()
@@ -22,11 +22,14 @@ class ImageListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        imageCollectionView.collectionViewLayout = createLayout()
+        configureUI()
         configureDataSource()
-        
-        viewModel.requestPhoto(query: "apple")
         bindData()
+    }
+    
+    func configureUI() {
+        imageCollectionView.collectionViewLayout = createLayout()
+        imageSearchbar.delegate = self
     }
     
     func bindData() {
@@ -39,6 +42,13 @@ class ImageListViewController: UIViewController {
                 vc.dataSource.apply(snapshot, animatingDifferences: false)
             }
             .disposed(by: disposeBag)
+    }
+}
+
+extension ImageListViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text else { return }
+        viewModel.requestPhoto(query: text)
     }
 }
 
