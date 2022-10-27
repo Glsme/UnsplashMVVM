@@ -44,27 +44,28 @@ class ImageListViewController: UIViewController {
 
 extension ImageListViewController {
     private func createLayout() -> UICollectionViewLayout {
-        let config = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-        let layout = UICollectionViewCompositionalLayout.list(using: config)
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.3))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        
+        let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }
     
     private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, PhotoResults> { cell, indexPath, itemIdentifier in
-            var content = UIListContentConfiguration.valueCell()
-            content.text = "\(itemIdentifier.likes)"
+        let cellRegistration = UICollectionView.CellRegistration<SearchPhotoCollectionViewCell, PhotoResults> { cell, indexPath, itemIdentifier in
             
             DispatchQueue.global().async {
                 let url = URL(string: itemIdentifier.urls.thumb)!
                 let data = try? Data(contentsOf: url)
                 
                 DispatchQueue.main.async {
-                    content.image = UIImage(data: data!)
-                    cell.contentConfiguration = content
+                    cell.searchedImageView.image = UIImage(data: data!)
                 }
             }
-            
-            cell.contentConfiguration = content
         }
         
         dataSource = UICollectionViewDiffableDataSource(collectionView: imageCollectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
