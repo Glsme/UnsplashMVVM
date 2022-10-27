@@ -20,6 +20,8 @@ class ImageListViewController: UIViewController {
         
         imageCollectionView.collectionViewLayout = createLayout()
         configureDataSource()
+        
+        viewModel.requestPhoto(query: "apple")
     }
 }
 
