@@ -35,11 +35,14 @@ class ImageDetailViewController: UIViewController {
             .subscribe { (vc, url) in
                 DispatchQueue.global().async {
                     let url = URL(string: url)!
-                    let data = try? Data(contentsOf: url)
+                    let data = try? Data(contentsOf: url) // pop 시 계속 캐스팅되는지?
 
                     DispatchQueue.main.async {
                         guard let data = data else { return }
                         vc.imageDetailView.image = UIImage(data: data)
+                        print("succeed") //dimmed 해제 / Kingfisher -> placeholder image 와 대박/
+                        // Kingfisher progress 설정
+                        // URLSession closure / UISessionDelegate 실시간으로 확인 가능
                     }
                 }
             }
@@ -55,7 +58,6 @@ class ImageDetailViewController: UIViewController {
     
     func showActivityController() {
         guard let image = imageDetailView.image else { return }
-        let imageURL = try! viewModel.imageUrl.value()
         let activityController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         
 //        activityController.excludedActivityTypes = [
@@ -73,9 +75,7 @@ class ImageDetailViewController: UIViewController {
                         break
                     }
                 }
-            }  else  {
-            // 실패했을 때 작업
-           }
+            }
         }
         
         present(activityController, animated: true)

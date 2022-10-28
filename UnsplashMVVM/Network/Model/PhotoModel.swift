@@ -23,10 +23,14 @@ struct PhotoResults: Codable, Hashable {
     let id: String
     let urls: Urls
     let likes: Int
+    let createdAt: String
+    let updatedAt: String
 
     enum CodingKeys: String, CodingKey {
         case id
         case urls, likes
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
     }
 }
 

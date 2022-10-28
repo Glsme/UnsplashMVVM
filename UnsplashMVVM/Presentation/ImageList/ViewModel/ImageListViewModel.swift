@@ -29,6 +29,8 @@ class ImageListViewModel {
             guard let self = self else { return }
             guard let value = value else { return }
             
+            print(error)
+            
             if self.currentPage == 1 {
                 self.photoList.onNext(value)
                 self.currentPage += 1

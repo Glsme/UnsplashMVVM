@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Photos
 
 import RxSwift
 import RxCocoa
@@ -31,6 +32,7 @@ class ImageListViewController: UIViewController {
         imageCollectionView.delegate = self
         imageCollectionView.collectionViewLayout = createLayout()
         imageSearchbar.delegate = self
+        imageCollectionView.keyboardDismissMode = .onDrag
     }
     
     func bindData() {
@@ -96,6 +98,9 @@ extension ImageListViewController {
                 
                 DispatchQueue.main.async {
                     cell.searchedImageView.image = UIImage(data: data!)
+                    cell.likeLabel.text = "♥️ \(itemIdentifier.likes)"
+                    cell.createdDateLabel.text = "\(itemIdentifier.createdAt)"
+                    cell.updatedDateLabel.text = "\(itemIdentifier.updatedAt)"
                 }
             }
         }
