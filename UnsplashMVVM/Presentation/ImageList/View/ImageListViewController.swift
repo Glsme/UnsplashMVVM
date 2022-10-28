@@ -69,9 +69,6 @@ extension ImageListViewController: UICollectionViewDelegate {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         guard let vc = sb.instantiateViewController(withIdentifier: "ImageDetailViewController") as? ImageDetailViewController else { return }
         vc.viewModel.imageUrl.onNext(try! viewModel.photoList.value().results[indexPath.item].urls.raw)
-//        let navi = UINavigationController(rootViewController: vc)
-        
-        print(try! viewModel.photoList.value().results[indexPath.item].urls.raw)
         navigationController?.pushViewController(vc, animated: true)
     }
 }

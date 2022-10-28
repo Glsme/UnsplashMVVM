@@ -6,12 +6,15 @@
 //
 
 import UIKit
+
+import Kingfisher
 import RxSwift
 import RxCocoa
 
 class ImageDetailViewController: UIViewController {
 
     @IBOutlet weak var imageDetailView: UIImageView!
+    @IBOutlet weak var imageProgressView: UIProgressView!
     
     let viewModel = ImageDetailViewModel()
     let disposeBag = DisposeBag()
@@ -27,24 +30,52 @@ class ImageDetailViewController: UIViewController {
     
     func configureUI() {
         navigationItem.rightBarButtonItem = shareBarButton
+        imageProgressView.progressViewStyle = .default
+        imageProgressView.progress = 0.0
     }
     
     func bindData() {
         viewModel.imageUrl
             .withUnretained(self)
             .subscribe { (vc, url) in
-                DispatchQueue.global().async {
-                    let url = URL(string: url)!
-                    let data = try? Data(contentsOf: url) // pop 시 계속 캐스팅되는지?
-
-                    DispatchQueue.main.async {
-                        guard let data = data else { return }
-                        vc.imageDetailView.image = UIImage(data: data)
-                        print("succeed") //dimmed 해제 / Kingfisher -> placeholder image 와 대박/
-                        // Kingfisher progress 설정
-                        // URLSession closure / UISessionDelegate 실시간으로 확인 가능
+                var percent: Float = 0.0
+                vc.imageDetailView.isHidden = true
+                vc.shareBarButton.isEnabled = false
+                
+                vc.imageDetailView.kf.setImage(with: URL(string: url)!) { receivedSize, totalSize in
+//                    print("received : \(receivedSize) | totalSize: \(totalSize)")
+                    percent = Float(receivedSize) / Float(totalSize)
+                    vc.imageProgressView.progress = percent
+                    
+                    if percent == 1 {
+                        
+                    }
+                } completionHandler: { result in
+                    switch result {
+                    case .success(_):
+                        vc.imageProgressView.isHidden = true
+                        vc.imageDetailView.isHidden = false
+                        vc.shareBarButton.isEnabled = true
+                    case .failure(let error):
+                        print(error)
+                        vc.imageProgressView.isHidden = true
+                        vc.imageDetailView.image = UIImage(systemName: "questionmark.circle")
+                        vc.imageDetailView.isHidden = false
                     }
                 }
+                
+//                DispatchQueue.global().async {
+//                    let url = URL(string: url)!
+//                    let data = try? Data(contentsOf: url) // pop 시 계속 캐스팅되는지?
+//
+//                    DispatchQueue.main.async {
+//                        guard let data = data else { return }
+//                        vc.imageDetailView.image = UIImage(data: data)
+//                        print("succeed") //dimmed 해제 / Kingfisher -> placeholder image 와 대박/
+//                        // Kingfisher progress 설정
+//                        // URLSession closure / UISessionDelegate 실시간으로 확인 가능
+//                    }
+//                }
             }
             .disposed(by: disposeBag)
         
@@ -59,11 +90,6 @@ class ImageDetailViewController: UIViewController {
     func showActivityController() {
         guard let image = imageDetailView.image else { return }
         let activityController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-        
-//        activityController.excludedActivityTypes = [
-//            UIActivity.ActivityType.assignToContact,
-//            UIActivity.ActivityType.addToReadingList
-//        ]
         
         activityController.completionWithItemsHandler = { (activity, success, items, error) in
             if success {

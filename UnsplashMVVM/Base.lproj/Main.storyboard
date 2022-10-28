@@ -78,18 +78,26 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yCk-qC-5Zr">
                                 <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                             </imageView>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ykj-eQ-BP6">
+                                <rect key="frame" x="20" y="424" width="353" height="4"/>
+                            </progressView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="WLk-dr-abn"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="Ykj-eQ-BP6" firstAttribute="centerY" secondItem="CPc-Td-lgv" secondAttribute="centerY" id="1wf-Lu-rnF"/>
                             <constraint firstItem="WLk-dr-abn" firstAttribute="bottom" secondItem="yCk-qC-5Zr" secondAttribute="bottom" id="2gu-Vx-pYB"/>
                             <constraint firstItem="WLk-dr-abn" firstAttribute="trailing" secondItem="yCk-qC-5Zr" secondAttribute="trailing" id="3gj-YF-VQY"/>
                             <constraint firstItem="yCk-qC-5Zr" firstAttribute="leading" secondItem="WLk-dr-abn" secondAttribute="leading" id="4Gl-IK-OxZ"/>
+                            <constraint firstItem="Ykj-eQ-BP6" firstAttribute="centerX" secondItem="CPc-Td-lgv" secondAttribute="centerX" id="HK0-pc-j3p"/>
+                            <constraint firstItem="WLk-dr-abn" firstAttribute="trailing" secondItem="Ykj-eQ-BP6" secondAttribute="trailing" constant="20" id="MPZ-u2-kyu"/>
                             <constraint firstItem="yCk-qC-5Zr" firstAttribute="top" secondItem="WLk-dr-abn" secondAttribute="top" id="gAs-Wo-ZgT"/>
+                            <constraint firstItem="Ykj-eQ-BP6" firstAttribute="leading" secondItem="WLk-dr-abn" secondAttribute="leading" constant="20" id="zjY-Mk-RzQ"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="imageDetailView" destination="yCk-qC-5Zr" id="z5F-Rv-MDp"/>
+                        <outlet property="imageProgressView" destination="Ykj-eQ-BP6" id="KhX-Ze-5Yi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IFX-LP-Knw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
