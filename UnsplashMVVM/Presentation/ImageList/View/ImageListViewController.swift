@@ -29,7 +29,6 @@ class ImageListViewController: UIViewController {
     }
     
     func configureUI() {
-        imageCollectionView.delegate = self
         imageCollectionView.collectionViewLayout = createLayout()
         imageCollectionView.keyboardDismissMode = .onDrag
     }
@@ -56,6 +55,16 @@ class ImageListViewController: UIViewController {
 //        imageCollectionView.rx.sele
 //        zip
         
+        imageCollectionView.rx.itemSelected
+            .withUnretained(self)
+            .subscribe { (vc, indexPath) in
+                let sb = UIStoryboard(name: "Main", bundle: nil)
+                guard let detailVC = sb.instantiateViewController(withIdentifier: "ImageDetailViewController") as? ImageDetailViewController else { return }
+                detailVC.viewModel.imageUrl.onNext(try! vc.viewModel.photoList.value().results[indexPath.item].urls.raw)
+                vc.navigationController?.pushViewController(detailVC, animated: true)
+            }
+            .disposed(by: disposeBag)
+        
         imageSearchbar.rx.text
             .debounce(RxTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
@@ -65,16 +74,6 @@ class ImageListViewController: UIViewController {
                 vc.viewModel.requestPhoto(query: text)
             }
             .disposed(by: disposeBag)
-    }
-}
-
-extension ImageListViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        let sb = UIStoryboard(name: "Main", bundle: nil)
-        guard let vc = sb.instantiateViewController(withIdentifier: "ImageDetailViewController") as? ImageDetailViewController else { return }
-        vc.viewModel.imageUrl.onNext(try! viewModel.photoList.value().results[indexPath.item].urls.raw)
-        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
