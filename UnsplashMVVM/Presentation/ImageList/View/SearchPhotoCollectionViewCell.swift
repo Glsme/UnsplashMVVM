@@ -15,6 +15,7 @@ class SearchPhotoCollectionViewCell: UICollectionViewCell {
         view.clipsToBounds = true
         view.layer.masksToBounds = true
         view.layer.cornerRadius = 10
+        view.contentMode = .scaleAspectFill
         return view
     }()
     
