@@ -13,8 +13,8 @@ class UnsplashAPIManager {
     
     private init() { }
     
-    func requsetUnsplashPhto(query: String, completionHandler: @escaping (SearchPhoto?, Error?) -> Void) {
-        let url = APIKey.searchURL + query
+    func requsetUnsplashPhto(query: String, page: Int, completionHandler: @escaping (SearchPhoto?, Error?) -> Void) {
+        let url = APIKey.searchURL + query + "&page=\(page)"
         let header: HTTPHeaders = ["Authorization": APIKey.authorization]
         
         AF.request(url, method: .get, headers: header).responseDecodable(of: SearchPhoto.self) { responce in

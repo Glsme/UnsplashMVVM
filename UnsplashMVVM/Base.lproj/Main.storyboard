@@ -88,11 +88,6 @@
                             <constraint firstItem="yCk-qC-5Zr" firstAttribute="top" secondItem="WLk-dr-abn" secondAttribute="top" id="gAs-Wo-ZgT"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Ga2-q3-8o9">
-                        <barButtonItem key="rightBarButtonItem" image="square.and.arrow.up" catalog="system" id="DPp-3W-bpi">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </barButtonItem>
-                    </navigationItem>
                     <connections>
                         <outlet property="imageDetailView" destination="yCk-qC-5Zr" id="z5F-Rv-MDp"/>
                     </connections>
@@ -121,7 +116,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

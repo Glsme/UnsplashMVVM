@@ -43,6 +43,14 @@ class ImageListViewController: UIViewController {
                 vc.dataSource.apply(snapshot, animatingDifferences: false)
             }
             .disposed(by: disposeBag)
+        
+        imageCollectionView.rx.prefetchItems
+            .compactMap { $0.last?.item }
+            .withUnretained(self)
+            .bind { (vc, item) in
+                vc.viewModel.requestPhotoPagination(query: vc.imageSearchbar.text!, index: item)
+            }
+            .disposed(by: disposeBag)
     }
 }
 
@@ -55,7 +63,6 @@ extension ImageListViewController: UISearchBarDelegate {
 
 extension ImageListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath)
         
         let sb = UIStoryboard(name: "Main", bundle: nil)
         guard let vc = sb.instantiateViewController(withIdentifier: "ImageDetailViewController") as? ImageDetailViewController else { return }

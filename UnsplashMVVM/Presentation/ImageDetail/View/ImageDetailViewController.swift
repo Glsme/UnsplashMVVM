@@ -16,22 +16,20 @@ class ImageDetailViewController: UIViewController {
     let viewModel = ImageDetailViewModel()
     let disposeBag = DisposeBag()
     
+    let shareBarButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: nil)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        configureUI()
         bindData()
-        
+    }
+    
+    func configureUI() {
+        navigationItem.rightBarButtonItem = shareBarButton
     }
     
     func bindData() {
-        
-//        viewModel.imageUrl
-//            .map { URL(string: $0)! }
-//            .map { try! Data(contentsOf: $0) }
-//            .map { UIImage(data: $0) }
-//            .bind(to: imageDetailView.rx.image)
-//            .disposed(by: disposeBag)
-        
         viewModel.imageUrl
             .withUnretained(self)
             .subscribe { (vc, url) in
@@ -49,5 +47,9 @@ class ImageDetailViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    
+    func showActivityController() {
+        let image = imageDetailView.image
+        let imageURL = try! viewModel.imageUrl.value()
+        let activityController = UIActivityViewController(activityItems: [image, imageURL], applicationActivities: nil)
+    }
 }
