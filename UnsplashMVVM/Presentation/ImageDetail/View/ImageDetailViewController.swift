@@ -46,10 +46,6 @@ class ImageDetailViewController: UIViewController {
 //                    print("received : \(receivedSize) | totalSize: \(totalSize)")
                     percent = Float(receivedSize) / Float(totalSize)
                     vc.imageProgressView.progress = percent
-                    
-                    if percent == 1 {
-                        
-                    }
                 } completionHandler: { result in
                     switch result {
                     case .success(_):
