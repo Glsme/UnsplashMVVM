@@ -43,7 +43,6 @@ class ImageDetailViewController: UIViewController {
                 vc.shareBarButton.isEnabled = false
                 
                 vc.imageDetailView.kf.setImage(with: URL(string: url)!) { receivedSize, totalSize in
-//                    print("received : \(receivedSize) | totalSize: \(totalSize)")
                     percent = Float(receivedSize) / Float(totalSize)
                     vc.imageProgressView.progress = percent
                 } completionHandler: { result in
@@ -75,6 +74,7 @@ class ImageDetailViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        // image + title = UIView
         shareBarButton.rx.tap
             .withUnretained(self)
             .subscribe { (vc, _) in

@@ -31,7 +31,6 @@ class ImageListViewController: UIViewController {
     func configureUI() {
         imageCollectionView.delegate = self
         imageCollectionView.collectionViewLayout = createLayout()
-        imageSearchbar.delegate = self
         imageCollectionView.keyboardDismissMode = .onDrag
     }
     
@@ -53,13 +52,19 @@ class ImageListViewController: UIViewController {
                 vc.viewModel.requestPhotoPagination(query: vc.imageSearchbar.text!, index: item)
             }
             .disposed(by: disposeBag)
-    }
-}
-
-extension ImageListViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let text = searchBar.text else { return }
-        viewModel.requestPhoto(query: text)
+        
+//        imageCollectionView.rx.sele
+//        zip
+        
+        imageSearchbar.rx.text
+            .debounce(RxTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .withUnretained(self)
+            .subscribe { (vc, text) in
+                guard let text = text else { return }
+                vc.viewModel.requestPhoto(query: text)
+            }
+            .disposed(by: disposeBag)
     }
 }
 
