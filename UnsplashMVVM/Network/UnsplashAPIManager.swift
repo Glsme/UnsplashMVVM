@@ -27,13 +27,9 @@ class UnsplashAPIManager {
 //        }
 //    }
     
-    func requestUnsplashPhotoWithAPIRouter(router: APIRouter, completionHandler: @escaping(SearchPhoto?, Error?) -> Void) {
+    func requestUnsplashPhotoWithAPIRouter(router: APIRouter, completionHandler: @escaping(Result<SearchPhoto, AFError>) -> Void) {
         AF.request(router).responseDecodable(of: SearchPhoto.self) { response in
-//            print(response)
-            switch response.result {
-            case .success(let value): completionHandler(value, nil)
-            case .failure(let error): completionHandler(nil, error)
-            }
+            completionHandler(response.result)
         }
     }
 }
