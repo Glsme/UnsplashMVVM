@@ -26,9 +26,6 @@ class ImageListViewController: UIViewController {
         configureUI()
         configureDataSource()
         bindData()
-        UnsplashAPIManager.shared.requestUnsplashPhotoWithAPIRouter(query: "apple", page: 1, router: APIRouter.get(query: "apple", page: 1)) { _, _ in
-            
-        }
     }
     
     func configureUI() {
