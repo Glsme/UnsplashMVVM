@@ -14,7 +14,7 @@ class ImageListViewModel {
     var currentPage = 1
 
     func requestPhoto(query: String) {
-        UnsplashAPIManager.shared.requsetUnsplashPhto(query: query, page: 1) { [weak self] value, error in
+        UnsplashAPIManager.shared.requsetUnsplashPhoto(query: query, page: 1) { [weak self] value, error in
             guard let value = value else { return }
             self?.photoList.onNext(value)
         }
@@ -25,7 +25,7 @@ class ImageListViewModel {
         guard currentPage <= list.totalPages else { return }
         guard index == (list.results.count) - 2 else { return }
         
-        UnsplashAPIManager.shared.requsetUnsplashPhto(query: query, page: currentPage) { [weak self]  value, error in
+        UnsplashAPIManager.shared.requsetUnsplashPhoto(query: query, page: currentPage) { [weak self]  value, error in
             guard let self = self else { return }
             guard let value = value else { return }
             

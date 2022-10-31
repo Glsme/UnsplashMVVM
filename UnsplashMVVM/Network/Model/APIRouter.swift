@@ -8,31 +8,35 @@
 import Foundation
 import Alamofire
 
-enum Router: URLRequestConvertible {
-    case get, post
+enum APIRouter: URLRequestConvertible {
+    case get(query: String, page: Int)
     
     var baseURL: URL {
-        return URL(string: "https://httpbin.org")!
+        return URL(string: "https://api.unsplash.com/search")!
     }
     
     var method: HTTPMethod {
         switch self {
         case .get: return .get
-        case .post: return .post
         }
     }
     
     var path: String {
         switch self {
-        case .get: return "get"
-        case .post: return "post"
+        case .get(let query, let page): return "photos?query=\(query)&page=\(page)" //연관값으로 사용
         }
+    }
+   
+    var headers: HTTPHeaders {
+        return ["Authorization": APIKey.authorization]
     }
     
     func asURLRequest() throws -> URLRequest {
-        let url = baseURL.appendingPathComponent(path)
+//        let url = baseURL.appendingPathComponent(path, conformingTo: .url)
+        let url = URL(string: "\(baseURL)/\(path)")!
         var request = URLRequest(url: url)
         request.method = method
+        request.headers = headers
         
         return request
     }

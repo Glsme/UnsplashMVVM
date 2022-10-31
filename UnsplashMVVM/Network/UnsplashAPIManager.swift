@@ -13,17 +13,23 @@ class UnsplashAPIManager {
     
     private init() { }
     
-    func requsetUnsplashPhto(query: String, page: Int, completionHandler: @escaping (SearchPhoto?, Error?) -> Void) {
+    func requsetUnsplashPhoto(query: String, page: Int, completionHandler: @escaping (SearchPhoto?, Error?) -> Void) {
         let url = APIKey.searchURL + query + "&page=\(page)"
         let header: HTTPHeaders = ["Authorization": APIKey.authorization]
         
         //상태 코드 정리: 열거형 (ex: 콜수 다 찾을 때 등)
-        AF.request(url, method: .get, headers: header).responseDecodable(of: SearchPhoto.self) { responce in
+        AF.request(url, method: .get, headers: header).responseDecodable(of: SearchPhoto.self) { response in
             
-            switch responce.result {
+            switch response.result {
             case .success(let value): completionHandler(value, nil)
             case .failure(let error): completionHandler(nil, error)
             }
+        }
+    }
+    
+    func requestUnsplashPhotoWithAPIRouter(query: String, page: Int, router: APIRouter, completionHandler: @escaping(SearchPhoto?, Error?) -> Void) {
+        AF.request(router).responseDecodable(of: SearchPhoto.self) { response in
+            print(response)
         }
     }
 }
