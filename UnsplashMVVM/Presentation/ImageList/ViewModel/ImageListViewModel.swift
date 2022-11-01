@@ -46,7 +46,6 @@ class ImageListViewModel {
             case .failure(let error):
                 print("error:: \(error)")
             }
-            
         }
     }
 }
