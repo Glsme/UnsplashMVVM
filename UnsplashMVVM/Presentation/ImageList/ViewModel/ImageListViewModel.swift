@@ -7,8 +7,31 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
-class ImageListViewModel {
+class ImageListViewModel: CommonViewModel {
+    
+    struct Input {
+        let searchText: ControlProperty<String?>
+        let prefetchItems: ControlEvent<[IndexPath]>
+    }
+    
+    struct Output {
+        let searchText: Observable<String>
+        let prefetchItems: Observable<Int>
+    }
+    
+    func transform(input: Input) -> Output {
+        let searchText = input.searchText
+            .orEmpty
+            .debounce(RxTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+        
+        let prefetchItems = input.prefetchItems
+            .compactMap { $0.last?.item }
+        
+        return Output(searchText: searchText, prefetchItems: prefetchItems)
+    }
     
     let photoList = BehaviorSubject(value: SearchPhoto(total: 0, totalPages: 0, results: []))
     var currentPage = 1

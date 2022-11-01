@@ -34,6 +34,10 @@ class ImageListViewController: UIViewController {
     }
     
     func bindData() {
+        
+        let input = ImageListViewModel.Input(searchText: imageSearchbar.rx.text, prefetchItems: imageCollectionView.rx.prefetchItems)
+        let output = viewModel.transform(input: input)
+        
         viewModel.photoList
             .withUnretained(self)
             .bind { (vc, value) in
@@ -44,8 +48,7 @@ class ImageListViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        imageCollectionView.rx.prefetchItems
-            .compactMap { $0.last?.item }
+        output.prefetchItems
             .withUnretained(self)
             .bind { (vc, item) in
                 vc.viewModel.requestPhotoPagination(query: vc.imageSearchbar.text!, index: item)
@@ -65,9 +68,7 @@ class ImageListViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        imageSearchbar.rx.text
-            .debounce(RxTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
+        output.searchText
             .withUnretained(self)
             .subscribe { (vc, text) in
                 guard let text = text else { return }
