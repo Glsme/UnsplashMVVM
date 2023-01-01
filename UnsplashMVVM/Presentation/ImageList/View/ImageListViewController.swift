@@ -35,8 +35,10 @@ class ImageListViewController: UIViewController {
     
     func bindData() {
         
-        let input = ImageListViewModel.Input(searchText: imageSearchbar.rx.text, prefetchItems: imageCollectionView.rx.prefetchItems)
-        let output = viewModel.transform(input: input)
+        let input = ImageListViewModel.Input(searchText: imageSearchbar.rx.text,
+                                             prefetchItems: imageCollectionView.rx.prefetchItems,
+                                             itemSelected: imageCollectionView.rx.itemSelected)
+        let output = viewModel.transform(input: input, disposebag: disposeBag)
         
         viewModel.photoList
             .withUnretained(self)
@@ -48,17 +50,7 @@ class ImageListViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        output.prefetchItems
-            .withUnretained(self)
-            .bind { (vc, item) in
-                vc.viewModel.requestPhotoPagination(query: vc.imageSearchbar.text!, index: item)
-            }
-            .disposed(by: disposeBag)
-        
-//        imageCollectionView.rx.sele
-//        zip
-        
-        imageCollectionView.rx.itemSelected
+        output.itemSelected
             .withUnretained(self)
             .subscribe { (vc, indexPath) in
                 let sb = UIStoryboard(name: "Main", bundle: nil)
@@ -71,7 +63,7 @@ class ImageListViewController: UIViewController {
         output.searchText
             .withUnretained(self)
             .subscribe { (vc, text) in
-                guard let text = text else { return }
+                vc.viewModel.searchedText = text
                 vc.viewModel.requestPhoto(query: text)
             }
             .disposed(by: disposeBag)

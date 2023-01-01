@@ -7,9 +7,11 @@
 
 import Foundation
 
+import RxSwift
+
 protocol CommonViewModel {
     associatedtype Input
     associatedtype Output
     
-    func transform(input: Input) -> Output
+    func transform(input: Input, disposebag: DisposeBag) -> Output
 }
